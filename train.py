@@ -15,7 +15,7 @@ import random
 
 maxlen = 29
 
-word_src = '' # Please include your own list of words to be trained with.
+word_src = '' # Please include your own list of words to be trained with, or a .txt file path here
 
 policy_net = Network()
 player = Agent(policy_net)
