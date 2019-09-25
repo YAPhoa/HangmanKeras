@@ -6,7 +6,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tqdm import tqdm
 
 from env import Hangman
-from network import Network, Agent
+from network import Network, NNAgent
 from utils import *
 from keras import optimizers
 
@@ -15,10 +15,10 @@ import random
 
 maxlen = 29
 
-word_src = '' # Please include your own list of words to be trained with, or a .txt file path here
+word_src = 'words.txt'
 
 policy_net = Network()
-player = Agent(policy_net)
+player = NNAgent(policy_net)
 policy_net.summary()
 
 
@@ -39,6 +39,8 @@ slightly extra than the actual game parameter so episodes are longer.
 
 game_params = {'max_lives' : 8}
 env = Hangman(word_src, **game_params)
+
+#player.model.load_weights('policy.h5')
 
 print('Training Start ...', end = '\n\n')
 
