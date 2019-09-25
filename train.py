@@ -40,8 +40,6 @@ slightly extra than the actual game parameter so episodes are longer.
 game_params = {'max_lives' : 8}
 env = Hangman(word_src, **game_params)
 
-#player.model.load_weights('policy.h5')
-
 print('Training Start ...', end = '\n\n')
 
 for episode_set in progbar :
