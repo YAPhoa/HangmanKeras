@@ -108,9 +108,32 @@ class Hangman(object) :
                 return self.show_gameboard(), self.lose_reward, self.done, {'ans' : self.guess_word}
             else :
                 if self.verbose :
-                    print('Current live :', self.curr_live)
+                    print('Current lives :', self.curr_live)
                 return self.show_gameboard(), self.false_reward, self.done, {}
 
 
 if __name__=='__main__' :
-    pass
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser()
+
+    parser.add_argument("-w", "--wordsrc", help = 'Text File that contains the word the game is based on', default = 'words.txt')
+    parser.add_argument("-l", "--lives", help = "maximum number of false attempt", default = 6, type = int)
+
+    args = parser.parse_args()
+    word_src = args.wordsrc
+    max_lives = args.lives
+    env = Hangman(word_src, max_lives, verbose = True)
+
+    env.reset()
+
+    done = False
+    
+    while not done :
+        ans = 'empty'
+        while len(ans) > 1 :
+            ans = input('Guessing letter : ')
+
+        _, _ , done, _ = env.step(ans)
+
+    
