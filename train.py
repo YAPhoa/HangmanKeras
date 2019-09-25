@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   
 os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 
@@ -11,20 +11,22 @@ from utils import *
 from keras import optimizers
 
 import numpy as np
-import random
 
-maxlen = 29
+with open('words.txt') as f :
+    word_src = f.read().splitlines()
 
-word_src = 'words.txt'
+len_list = list(map(len, word_src))
+maxlen = max(len_list)
+print('Max length of words is', maxlen) 
 
-policy_net = Network()
+policy_net = Network(maxlen=maxlen)
 player = NNAgent(policy_net)
 policy_net.summary()
 
 
 save_episode = 5000
 view_episode = 500
-update_episode = 3
+update_episode = 5
 avg_correct = 0
 wins_avg = 0
 n_trials = 20000
@@ -40,13 +42,10 @@ slightly extra than the actual game parameter so episodes are longer.
 game_params = {'max_lives' : 8}
 env = Hangman(word_src, **game_params)
 
-#player.model.load_weights('policy.h5')
-
 print('Training Start ...', end = '\n\n')
 
 for episode_set in progbar :
     for _ in range(update_episode) :
-        total_reward = 0    
         state = env.reset()
         done = False
         correct_count = 0

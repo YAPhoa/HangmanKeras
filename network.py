@@ -1,6 +1,6 @@
 import os
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+#os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 import numpy as np
 
@@ -86,14 +86,13 @@ class Agent(object) :
     Tried both with stochastic and greedy. Greedy policy performs converges better.
     """
 
-    def __init__(self, model, maxlen = 29, policy = 'greedy') :
+    def __init__(self, model, policy = 'greedy') :
         self.reset_guessed()
         if policy not in ['stochastic', 'greedy'] :
             raise ValueError('Policy can only be stochastic or greedy')
         self._policy = 'greedy'
         self.policy = property(self.get_policy, self.set_policy)
         self.reset_guessed()
-        self.maxlen = maxlen
         self.is_training = True
         self.model = model
 
@@ -146,13 +145,10 @@ class Agent(object) :
 
 class NNAgent(Agent) :
     def __init__(self, model, maxlen=29, policy='greedy') :
-        super().__init__(model, maxlen, policy)
+        super().__init__(model, policy)
         self.episode_memory = []
         self.states_history = []
-
-    def append_sample(self, action, reward):
-        self.reward_episode.append(reward)
-        self.actions.append(action)
+        self.maxlen = maxlen
 
     def train_model(self):
         inp_1, inp_2, obj = zip(*self.states_history)
