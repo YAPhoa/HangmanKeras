@@ -62,7 +62,7 @@ for episode_set in progbar :
     progbar.set_description("Loss : {:.3f}              ".format(loss))
 
     if (episode_set +1) % view_episode == 0 :
-        views = (episode_set + 1,avg_correct/(update_episode*view_episode), view_episode, wins_avg/(update_episode*view_episode))
+        views = (episode_set + 1,avg_correct/(update_episode*view_episode), view_episode*update_episode, wins_avg/(update_episode*view_episode))
         print('Episode {} -------- Average Correct Count : {:.3f}     Last {} winrate : {:.3f}'.format(*views))
         if loss is not None :
             print('Loss :', loss)
